@@ -1,0 +1,264 @@
+object DM: TDM
+  OldCreateOrder = False
+  Height = 406
+  HorizontalOffset = 334
+  VerticalOffset = 189
+  Width = 754
+  object Conexao_ZEOS: TZConnection
+    ControlsCodePage = cCP_UTF8
+    ClientCodepage = 'WIN1252'
+    Catalog = 'Northwind'
+    Properties.Strings = (
+      'AutoEncodeStrings=ON'
+      'controls_cp=CP_UTF8'
+      'codepage=WIN1252'
+    )
+    Connected = True
+    BeforeConnect = Conexao_ZEOSBeforeConnect
+    HostName = '127.0.0.1'
+    Port = 0
+    Database = 'E:\Banco\OPENARQUIVOS.FDB'
+    User = 'SYSDBA'
+    Password = 'masterkey'
+    Protocol = 'firebird-2.5'
+    left = 117
+    top = 124
+  end
+  object ZQAssunto: TZQuery
+    Connection = Conexao_ZEOS
+    UpdateObject = ZUpdateSQL1
+    CachedUpdates = True
+    OnPostError = ZQAssuntoPostError
+    OnNewRecord = ZQAssuntoNewRecord
+    SQL.Strings = (
+      'select * from ASSUNTO'
+      'where CODIGO=:paramCodigo'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'paramCodigo'
+        ParamType = ptInput
+      end>
+    left = 252
+    top = 125
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'paramCodigo'
+        ParamType = ptInput
+      end>
+    object ZQAssuntoCODIGO: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQAssuntoTITULOASSUN: TStringField
+      DisplayWidth = 560
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Size = 120
+    end
+    object ZQAssuntoDATA: TDateField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      EditMask = '99/99/9999'
+    end
+    object ZQAssuntoCURSO: TStringField
+      DisplayWidth = 560
+      FieldKind = fkData
+      FieldName = 'CURSO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Size = 120
+    end
+  end
+  object ZQLocalisaAssunto: TZQuery
+    Connection = Conexao_ZEOS
+    OnPostError = ZQLocalisaAssuntoPostError
+    SQL.Strings = (
+      'select * from ASSUNTO'
+      'where TITULOASSUN like :param'
+      'order by DATA desc'
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'param'
+        ParamType = ptInput
+      end>
+    left = 616
+    top = 124
+    ParamData = <    
+      item
+        DataType = ftString
+        Name = 'param'
+        ParamType = ptInput
+      end>
+    object ZQLocalisaAssuntoCODIGO: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object ZQLocalisaAssuntoTITULOASSUN: TStringField
+      DisplayWidth = 50
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object ZQLocalisaAssuntoDATA: TDateField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQLocalisaAssuntoCURSO: TStringField
+      DisplayWidth = 50
+      FieldKind = fkData
+      FieldName = 'CURSO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+  end
+  object ZUpdateSQL1: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM ASSUNTO'
+      'WHERE'
+      '  ASSUNTO.CODIGO = :OLD_CODIGO'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO ASSUNTO'
+      '  (CODIGO, TITULOASSUN, DATA, CURSO)'
+      'VALUES'
+      '  (:CODIGO, :TITULOASSUN, :DATA, :CURSO)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE ASSUNTO SET'
+      '  CODIGO = :CODIGO,'
+      '  TITULOASSUN = :TITULOASSUN,'
+      '  DATA = :DATA,'
+      '  CURSO = :CURSO'
+      'WHERE'
+      '  ASSUNTO.CODIGO = :OLD_CODIGO'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 368
+    top = 120
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'TITULOASSUN'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'CURSO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_CODIGO'
+        ParamType = ptUnknown
+      end>
+  end
+  object ZQuery1: TZQuery
+    Connection = Conexao_ZEOS
+    SQL.Strings = (
+      'select * from ASSUNTO'
+      'order by DATA desc'
+    )
+    Params = <>
+    left = 480
+    top = 125
+    object ZQuery1CODIGO: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQuery1TITULOASSUN: TStringField
+      DisplayWidth = 40
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object ZQuery1DATA: TDateField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQuery1CURSO: TStringField
+      DisplayWidth = 40
+      FieldKind = fkData
+      FieldName = 'CURSO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+  end
+end
